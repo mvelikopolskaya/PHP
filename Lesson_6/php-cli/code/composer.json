@@ -1,0 +1,18 @@
+{
+  "name": "example/project",
+  "description": "Application for work with file storage",
+  "type": "project",
+  "require": {
+    "php": "^8.2"
+  },
+  "autoload": {
+    "files": [
+      "src/main.function.php",
+      "src/template.function.php",
+      "src/file.function.php",
+      "src/date.function.php",
+      "src/name.function.php",
+      "src/search.function.php"
+    ]
+  }
+}
