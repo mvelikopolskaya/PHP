@@ -1,0 +1,17 @@
+{
+  "name": "example/project",
+  "description": "Application for work with file storage",
+  "type": "project",
+  "require": {
+    "php": "^8.0"
+  },
+  "autoload": {
+    "files": [
+      "src/Book.php",
+      "src/Bookcase.php",
+      "src/DigitalBook.php",
+      "src/PaperBook.php",
+      "src/Shelf.php"
+    ]
+  }
+}
