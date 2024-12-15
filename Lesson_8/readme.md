@@ -1,6 +1,8 @@
 Для запуска заданий 1-4:
 docker build -t lesson_8 .
 
+docker container run -it -v ${pwd}/code:/code/ lesson_8 composer install
+
 docker run -it -v ${pwd}/code:/code lesson_8 php /code/app.php
 
 Выполнение задания п.5 в папке php-cli
