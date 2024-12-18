@@ -12,12 +12,22 @@
                 <a class="link" href="/about">About</a>
             </nav>
             <h1 class="header">{% include 'layouts/header.twig' %}</h1>
-            {% include content_template_name %}
-            <div class="sidebar">
-                {% include 'layouts/sidebar.twig' %}
+            <div class="content_main">
+                <div class="content">
+                    <span class="content_text">
+                        {% include content_template_name %}
+                    </span>
+                </div>
+                <div class="sidebar">
+                    <div class="sidebar_text">
+                        {% include 'layouts/sidebar.twig' %}
+                    </div>  
+                </div>
             </div>
             <div class="footer">
+              <span class="footer_text">
                 {% include 'layouts/footer.twig' %}
+              </span>  
             </div>
         </div> 
     </body>
