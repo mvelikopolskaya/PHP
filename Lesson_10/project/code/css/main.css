@@ -6,6 +6,21 @@ a {
   background: white;
 }
 
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.top_link {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.link {
+}
+
 .header {
   display: flex;
   color: #187093;

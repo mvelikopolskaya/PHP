@@ -45,8 +45,12 @@ class User {
                 $user = new User(
                     $userArray[0]
                 );
-                $user->setBirthdayFromString($userArray[1]);
-
+                if(!empty($userArray[1])) {
+                    $user->setBirthdayFromString($userArray[1]);
+                }
+                else {
+                    break;
+                }
                 $users[] = $user;
             }
             
