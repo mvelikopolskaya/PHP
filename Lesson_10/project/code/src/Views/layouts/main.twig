@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ title }}</title>
+    <link href="./css/main.css" rel="stylesheet" />
+    <body class="body">
+        <div class="main">
+            <nav>
+                <a class="link" href="/">Main</a>
+                <a class="link" href="/user">Users</a>
+                <a class="link" href="/about">About</a>
+            </nav>
+            <h1 class="header">{% include 'layouts/header.twig' %}</h1>
+            {% include content_template_name %}
+            <div class="sidebar">
+                {% include 'layouts/sidebar.twig' %}
+            </div>
+            <div class="footer">
+                {% include 'layouts/footer.twig' %}
+            </div>
+        </div> 
+    </body>
+  </head>
+</html>
