@@ -5,31 +5,29 @@
     <title>{{ title }}</title>
     <link href="./css/main.css" rel="stylesheet" />
     <body class="body">
-        <div class="main">
-           <nav class="top_link">
-                <a class="link" href="/">Main</a>
-                <a class="link" href="/user">Users</a>
-                <a class="link" href="/about">About</a>
-            </nav>
-            <h1 class="header">{% include 'layouts/header.twig' %}</h1>
-            <div class="content_main">
-                <div class="content">
-                    <span class="content_text">
-                        {% include content_template_name %}
-                    </span>
-                </div>
-                <div class="sidebar">
-                    <div class="sidebar_text">
-                        {% include 'layouts/sidebar.twig' %}
-                    </div>  
-                </div>
+        <div id="header">
+            <div id="title"><a name="title">{% include 'layouts/header.twig' %}</a></div>
+            <div id="top_menu">
+            <div class="menu_item">
+            </div> | <div class="menu_item">
+            <a href="/">Main</a>
+            </div> | <div class="menu_item">
+              <a href="/user">Users</a>
+            </div> | <div class="menu_item">
+              <a href="/about">About</a>
+              </div>
             </div>
-            <div class="footer">
-              <span class="footer_text">
-                {% include 'layouts/footer.twig' %}
-              </span>  
+        </div>
+        <div id="container">
+            <div id="sidebar"><div class="sidebar_item"><a href="/" class="sidebar_item">Main</a></div>
+                <div class="sidebar_item"><a href="/user" class="sidebar_item">Users</a></div>
+                <div class="sidebar_item"><a href="/about" class="sidebar_item">About</a></div>
             </div>
-        </div> 
+            <div id="content"><p>{% include content_template_name %}</p></div>
+        </div>
+        <div id="footer"><div id="copyright">{% include 'layouts/footer.twig' %}</div>
+            <div class="footer_link"><a href="#top">&uarr;&nbsp;Top</a></div>
+        </div>
     </body>
   </head>
 </html>
