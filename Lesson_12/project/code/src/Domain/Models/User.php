@@ -63,7 +63,7 @@ class User {
         $users = [];
 
         foreach($result as $item){
-            $user = new User($item['user_name'], $item['user_lastname'], $item['user_birthday_timestamp']);
+            $user = new User($item['user_name'], $item['user_lastname'], $item['user_birthday_timestamp'], $item['id_user']);
             $users[] = $user;
         }
         
@@ -84,6 +84,7 @@ class User {
     }
 
     public function setParamsFromRequestData(): void {
+        $this->idUser = $_GET['id'];
         $this->userName = $_GET['name'];
         $this->userLastName = $_GET['lastname'];
         $this->setBirthdayFromString($_GET['birthday']); 
@@ -102,7 +103,6 @@ class User {
 
     public static function exists(int $id): bool{
         $sql = "SELECT count(id_user) as user_count FROM users WHERE id_user = :id_user";
-
         $handler = Application::$storage->get()->prepare($sql);
         $handler->execute([
             'id_user' => $id
@@ -136,5 +136,17 @@ class User {
         $sql = "DELETE FROM users WHERE id_user = :id_user";
         $handler = Application::$storage->get()->prepare($sql);
         $handler->execute(['id_user' => $user_id]);
+    }
+
+    public static function getUserById(int $id) : User {
+        $sql = "SELECT * FROM users WHERE id_user = :id";
+        $handler = Application::$storage->get()->prepare($sql);
+        $handler->execute(['id' => $id]);
+        $result = $handler->fetch();
+        return new User(
+            $result["user_name"], 
+            $result["user_lastname"], 
+            $result["user_birthday_timestamp"], 
+            $result['id_user']);
     }
 }
