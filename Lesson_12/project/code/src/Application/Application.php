@@ -2,7 +2,6 @@
 
 namespace Geekbrains\Application1\Application;
 
-use Exception;
 use Geekbrains\Application1\Infrastructure\Config;
 use Geekbrains\Application1\Infrastructure\Storage;
 

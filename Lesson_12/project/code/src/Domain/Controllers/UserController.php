@@ -2,6 +2,7 @@
 
 namespace Geekbrains\Application1\Domain\Controllers;
 
+use Exception;
 use Geekbrains\Application1\Application\Render;
 use Geekbrains\Application1\Domain\Models\User;
 
@@ -74,15 +75,13 @@ class UserController {
     public function actionDelete(): string {
         if(User::exists($_GET['id'])) {
             User::deleteFromStorage($_GET['id']);
-
             $render = new Render();
-            
             return $render->renderPage(
                 'user-removed.twig', []
             );
         }
         else {
-            throw new \Exception("Requested user doesn't exist");
+            throw new Exception("Requested user doesn't exist");
         }
     }
 }
