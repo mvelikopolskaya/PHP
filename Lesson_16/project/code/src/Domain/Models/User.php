@@ -13,15 +13,15 @@ class User {
 
     private ?string $userLastName;
     private ?int $userBirthday;
-    private string $userLogin;
+    private ?string $userLogin;
 
-    private string $userRole;
 
-    public function __construct(string $name = null, string $lastName = null, int $birthday = null, int $id_user = null){
+    public function __construct(string $name = null, string $lastName = null, int $birthday = null, int $id_user = null, string $login = null){
         $this->userName = $name;
         $this->userLastName = $lastName;
         $this->userBirthday = $birthday;
         $this->idUser = $id_user;
+        $this->userLogin = $login;
     }
 
     public function setUserId(int $id_user): void {
@@ -44,10 +44,6 @@ class User {
         $this->userLogin = $userLogin;
     }
 
-    public function setRole(string $userRole) : void {
-        $this->userRole = $userRole;
-    }
-
     public function getUserName(): string {
         return $this->userName;
     }
@@ -62,6 +58,10 @@ class User {
 
     public function setBirthdayFromString(string $birthdayString) : void {
         $this->userBirthday = strtotime($birthdayString);
+    }
+
+    public function getUserLogin(): string {
+        return $this->userLogin;
     }
 
     public function setToken(){
@@ -132,7 +132,6 @@ class User {
         $this->userLastName = htmlspecialchars($_POST['lastname']);
         $this->setBirthdayFromString($_POST['birthday']);
         $this->userLogin = htmlspecialchars($_POST['login']);
-        $this->userRole = htmlspecialchars($_POST['role']); 
     }
 
     public function saveToStorage(){
@@ -163,18 +162,33 @@ class User {
         }
     }
 
+    public static function existsWithLogin(string $login): bool{
+        $sql = "SELECT count(id_user) as user_count FROM users WHERE login = :login";
+        $handler = Application::$storage->get()->prepare($sql);
+        $handler->execute([
+            'login' => $login
+        ]);
+
+        $result = $handler->fetchAll();
+
+        if(count($result) > 0 && $result[0]['user_count'] > 0){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
     public function updateUser(array $userDataArray): void{
         $sql = "UPDATE users SET ";
         $counter = 0;
         foreach($userDataArray as $key => $value) {
-            $sql .= $key ." = :".$value;
+            $sql .= $key ." = :".$key;
             if($counter != count($userDataArray)-1) {
                 $sql .= ",";
             }
             $counter++;
         }
         $sql .= " WHERE id_user = " . $this->getUserId();
-
         $handler = Application::$storage->get()->prepare($sql);
         $handler->execute($userDataArray);
     }
@@ -194,7 +208,9 @@ class User {
             $result["user_name"], 
             $result["user_lastname"], 
             $result["user_birthday_timestamp"], 
-            $result['id_user']);
+            $result['id_user'],
+            $result['login']);
+
     }
 
     public function getUserRoleByID() {

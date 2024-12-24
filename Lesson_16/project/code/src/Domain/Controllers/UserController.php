@@ -44,27 +44,38 @@ class UserController extends AbstractController {
     }
 
     public function actionSave() {
+        $render = new Render();
         if(User::validateRequestData()) {
             $user = new User();
             $user->setParamsFromRequestData();
-            $user->saveToStorage();
-            $render = new Render();
-            return $render->renderPage(
+            if($user->existsWithLogin($user->getUserLogin())) {
+                return $render->renderPage(
+                    'user-created.twig', 
+                    [
+                        'title' => 'User exists',
+                        'message' => "User {$user->getUserName()} already exists" 
+                    ]);
+            }
+            else {
+                $user->saveToStorage();
+                return $render->renderPage(
                 'user-created.twig', 
                 [
                     'title' => 'User was created',
                     'message' => "User was created " . $user->getUserName() . " " . $user->getUserLastName()
                 ]);
-        }
+                }
+            }
+            
         else {
             throw new Exception("The inputted data is incorrect");
         }
     }
 
     public function actionUpdate(): string {
-        if(User::exists($_POST['user_id'])) {
-            $user = new User();
-            $user->setUserId($_POST['user_id']);
+        $user_id = (int)$_GET['id'];
+        if(User::exists($user_id)) {
+            $user = User::getUserById($user_id);
             $arrayData = [];
             if(isset($_POST['name']))
                 $arrayData['user_name'] = $_POST['name'];
@@ -81,7 +92,7 @@ class UserController extends AbstractController {
             'user-created.twig', 
             [
                 'title' => 'The user get updated',
-                'message' => "The user get updated " . $user->getUserId()
+                'message' => "The user with id {$user->getUserId()} get updated "
             ]);
     }
 
@@ -115,21 +126,26 @@ class UserController extends AbstractController {
         }
     }
 
+    public function actionUpdateData() {
+        $render = new Render();
+        $user_id = (int)$_GET['id'];
+        if(User::exists($user_id)){
+            $user = User::getUserById($user_id);
+        }
+        return $render->renderPageWithForm(
+                'user-update.twig', 
+                [
+                    'title' => "User's update form",
+                    'user' => $user
+                ]);
+    }
+
     public function actionEdit(): string {
         $render = new Render();
-        $userData = [];
-        $action = "user/save";
-        if(isset($_GET['user_id'])) {
-            $userId = $_GET['user_id'];
-            $action = 'user/update';
-            $userDate = User::getUserById($userId);
-        }
         return $render->renderPageWithForm(
                 'user-form.twig', 
                 [
-                    'title' => 'User creation form',
-                    'user_data' => $userData[0] ?? [],
-                    'action' => $action
+                    'title' => "User's form"
                 ]);
     }
 
@@ -142,7 +158,9 @@ class UserController extends AbstractController {
         return $render->renderPageWithForm(
                 'user-auth.twig', 
                 [
-                    'title' => 'Login'
+                    'title' => 'Login',
+                    'auth-success' => true,
+                    'auth-error' => '11'
                 ]);
     }
 
