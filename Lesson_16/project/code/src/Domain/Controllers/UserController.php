@@ -16,7 +16,6 @@ class UserController extends AbstractController {
         'actionSave' => ['admin'],
         'actionEdit' => ['admin'],
         'actionIndex' => ['admin'],
-        'actionLogout' => ['admin'],
         'actionCreate' => ['admin'],
         'actionDelete' => ['admin'],
         'actionUpdate' => ['admin']
@@ -159,34 +158,38 @@ class UserController extends AbstractController {
                 'user-auth.twig', 
                 [
                     'title' => 'Login',
-                    'auth-success' => true,
-                    'auth-error' => '11'
+                    'auth_success' => true
                 ]);
     }
 
     public function actionLogin(): string {
         $result = false;
+        $render = new Render();
         if(isset($_POST['login']) && isset($_POST['password'])){
             $result = Application::$auth->proceedAuth($_POST['login'], $_POST['password']);
         }
-        if(!$result){
-            $render = new Render();
+        if($result){
+            if(isset($_POST['user-remember']) && ($_POST['user-remember'] == 'remember')) {
+                $token = Application::$auth->generateToken();
+                User::setToken($_SESSION['id_user'], $token);
+            }
+            header('Location: /');
+            return "";
+        }
+        else {
             return $render->renderPageWithForm(
                 'user-auth.twig', 
                 [
                     'title' => 'Login',
-                    'auth-success' => false,
-                    'auth-error' => 'Wrong login or password'
+                    'auth_success' => false,
+                    'auth_error' => 'Wrong login or password'
                 ]);
-        }
-        else{
-            header('Location: /');
-            return "";
         }
     }
 
     public function actionLogout() {
         session_destroy();
+        User::destroyToken();
         unset($_SESSION['user_name']);
         header("Location: /");
         die();

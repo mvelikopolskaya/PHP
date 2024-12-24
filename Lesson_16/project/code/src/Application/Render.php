@@ -26,6 +26,7 @@ class Render {
         $templateVariables['content_template_name'] = $contentTemplateName;
         if(isset($_SESSION['user_name'])){
             $templateVariables['user_authorized'] = true;
+            $templateVariables['user_name'] = $_SESSION['user_name'];
         }
  
         return $template->render($templateVariables);

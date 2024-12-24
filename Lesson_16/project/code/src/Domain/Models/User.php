@@ -64,17 +64,28 @@ class User {
         return $this->userLogin;
     }
 
-    public function setToken(){
-
+    public static function setToken(int $id, string $token){
+        $sql = "UPDATE users SET token = :token WHERE id_user = :id";
+        $handler = Application::$storage->get()->prepare($sql);
+        $handler->execute(['id' => $id, 'token' => $token]);
+        setcookie('auth_token', $token, time() +36000, '/');
     }
 
-    // public function destroyToken() {
-    //     $sql = "UPDATE users SET token = :token WHERE id_user = :id";
-    //     $handler = Application::$storage->get()->prepare($sql);
-    //     $handler->execute(['token' => md5(bin2hex(random_bytes(16))), 'id' => $_SESSION['auth']['id_user']]);
-    //     $result = $handler->fetchAll();
-    //     return $result[0] ?? [];
-    // }
+    public static function verifyToken(string $token) {
+        $sql = "SELECT * FROM users WHERE token = :token";
+        $handler = Application::$storage->get()->prepare($sql);
+        $handler->execute(['token' => $token]);
+        $result = $handler->fetchAll();
+        return $result[0] ?? [];
+    }
+
+    public static function destroyToken() {
+        $sql = "UPDATE users SET token = :token WHERE id_user = :id";
+        $handler = Application::$storage->get()->prepare($sql);
+        $handler->execute(['token' => md5(bin2hex(random_bytes(16))), 'id' => $_SESSION['id_user']]);
+        $result = $handler->fetchAll();
+        return $result[0] ?? [];
+    }
 
     public static function getAllUsersFromStorage(): array {
         $sql = "SELECT * FROM users";
