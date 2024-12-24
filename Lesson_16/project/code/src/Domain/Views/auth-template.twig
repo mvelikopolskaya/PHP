@@ -1,0 +1,5 @@
+{% if not user_authorized %}
+    <a href="/user/auth">Enter system</a>
+{% else %}
+    Welcome!<a href="/user/logout">Logout</a>
+{% endif %}

@@ -1,0 +1,19 @@
+<form action="/user/save/" method="post">
+  <input id="csrf_token" type="hidden" name="csrf_token" value="{{ csrf_token }}">
+  <p>
+      <label for="user-login">Login:</label>
+      <input id="user-login" type="text" name="login" value="{{ login }}">
+    </p>
+    <label for="user-name">Name:</label>
+    <input id="user-name" type="text" name="name">
+  </p>
+  <p>
+    <label for="user-lastname">Last name:</label>
+    <input id="user-lastname" type="text" name="lastname">
+  </p>
+  <p>
+    <label for="user-birthday">Birthday:</label>
+    <input id="user-birthday" type="text" name="birthday" placeholder="dd-MM-YYYY">
+  </p>
+  <p><input type="submit" value="Save"></p>
+</form>

@@ -1,0 +1,25 @@
+<p>User's list in the storage:</p>
+<p>
+    <form action="/user/save/" method="post">
+                        <input id="csrf_token" type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                            <input type="submit" value="Create new user">
+                    </form>
+</p>
+<ul id="navigation">
+    {% for user in users %}
+        <li>
+            <a href="/user/show/?id={{user.getUserId()}}">{{ user.getUserName() }}. {{ user.getUserLastName() }}. Birthday: {{ user.getUserBirthday() | date('d.m.Y') }}</a>
+                <p>
+                    <form action="/user/update/" method="post">
+                        <input id="csrf_token" type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                            <input type="submit" value="Update">
+                    </form>
+                    <form action="/user/delete/" method="post">
+                        <input id="csrf_token" type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                            <input type="submit" value="Delete">
+                    </form>
+                </p>
+        </li>
+        
+    {% endfor %}
+</ul>
