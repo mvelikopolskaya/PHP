@@ -108,7 +108,9 @@ class UserController extends AbstractController {
             User::deleteFromStorage($user_id);
             $render = new Render();
             return $render->renderPage(
-                'user-index.twig', []
+                'user-index.twig', [
+                    'isAdmin' => User::isAdmin($_SESSION['id_user'] ?? null
+                    )]
             );
         }
         else {
@@ -209,9 +211,11 @@ class UserController extends AbstractController {
         }
         $users = User::getAllUsersFromStorage($limit);
         $userData = [];
+        $isAdmin = User::isAdmin($_SESSION['id_user']);
+        $userData['isAdmin'] = $isAdmin; 
         if(count($users) > 0) {
             foreach($users as $user) {
-                $userData[] = $user->getUserDataArray();
+                $userData['users'][] = $user->getUserDataArray();
             }
         }
         return json_encode($userData);

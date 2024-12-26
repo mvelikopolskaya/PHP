@@ -4,7 +4,7 @@ namespace Geekbrains\Application1\Domain\Models;
 
 use Geekbrains\Application1\Application\Application;
 use Geekbrains\Application1\Domain\Models\Validator;
-
+use DateTime;
 
 class User {
 
@@ -59,8 +59,8 @@ class User {
 
     public function setBirthdayFromString(string $birthdayString) : void {
         if(Validator::validateDate($birthdayString)){
-            $birthdayString = date('d.m.Y');
-            $this->userBirthday = $birthdayString;
+            $birthdate = DateTime::createFromFormat('d-m-Y', $birthdayString);
+            $this->userBirthday = $birthdate->format('d.m.Y');
         }
     }
 

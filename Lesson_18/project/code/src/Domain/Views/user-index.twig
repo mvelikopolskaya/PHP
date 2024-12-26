@@ -1,12 +1,14 @@
 <h3>User's list in the storage:</h3>
+{% if isAdmin %}
 <p>
     <form action="/user/edit/" method="post">
-                        <input id="csrf_token" type="hidden" name="csrf_token" value="{{ csrf_token }}">
-                        <input type="submit" value="Create new user">
+            <input id="csrf_token" type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <input type="submit" value="Create new user">
     </form>
 </p>
+{% endif %}
 <div class="table-responsive small">
-    <table class="table table-striped table-sm">
+    <table id="user_table" class="table table-striped table-sm">
         <thead>
             <tr>
                 <th scope="col">ID</th>
@@ -20,7 +22,7 @@
         </thead>
         <tbody>
     {% for user in users %}
-        <tr>
+        <tr id="tr_{{ user.getUserId() }}">
             <td>{{ user.getUserId() }}</td>
             <td>{{ user.getUserName() }}</td>
             <td>{{ user.getUserLastName() }} </td>
@@ -56,53 +58,41 @@
         $.ajax({
             method: 'POST',
             url: "/user/indexRefresh/",
-            data: { maxId: maxId }
+            data: null
         }).done(function (response) {
-            // data - Json response
-            // 0 => [username, userlastname, userbirthday]
-            let users = $.parseJSON(response);
-            if(Array.isArray(users)) {
+
+            let userData = $.parseJSON(response);
+            let users = userData.users;
+            let isAdmin = userData.isAdmin;
+            if(Array.isArray(users)){                
+                let row_list = "";
                 for(var k in users){
-                    let row = "<tr>";
+                    let row_id = 'tr_' + users[k].id;
+                    let row = `<tr id="${row_id}">`;
+
+                    let updateUser = `<form action="/user/updatedata/?id=${users[k].id}" method="post">
+                        <input id="csrf_token" type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                        <input type="submit" value="Update">
+                    </form>`;
+
+                    let deleteUser = `<form action="/user/delete/?id=${users[k].id}" method="post">
+                        <input id="csrf_token" type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                        <input type="submit" value="Delete">
+                    </form>`;
 
                     row += "<td>" + users[k].id + "</td>";
-                    maxId = users[k].id;
                     row += "<td>" + users[k].username + "</td>";
                     row += "<td>" + users[k].userlastname + "</td>";
                     row += "<td>" + users[k].userbirthday + "</td>";
+                    if (isAdmin) {
+                        row += "<td>" + updateUser + "</td>";
+                        row += "<td>" + deleteUser + "</td>";
+                    }
                     row += "</tr>";
-                    $('.content-template tbody').append(row);
+                    row_list += row;
                 }
+                $('#user_table tbody').html(row_list);
             }
         });
-    }, 100);
-</script>
-
-{# <script>
-    let maxId = $('.table-responsive tbody tr:last-child td:first-child').html();
-
-    setInterval(function () {
-        $.ajax({
-            method: 'POST',
-            url: "/user/indexRefresh/",
-            data: { maxId: maxId }
-        }).done(function (response) {
-            // data - Json response
-            // 0 => [username, userlastname, userbirthday]
-            let users = $.parseJSON(response);
-            if(users.length != 0){
-                for(var k in users){
-                    let row = "<tr>";
-
-                    row += "<td>" + users[k].id + "</td>";
-                    maxId = users[k].id;
-                    row += "<td>" + users[k].username + "</td>";
-                    row += "<td>" + users[k].userlastname + "</td>";
-                    row += "<td>" + users[k].userbirthday + "</td>";
-                    row += "</tr>";
-                    $('.content-template tbody').remove(row);
-                }
-            }
-        });
-    }, 10000);
-    </script> #}
+    }, 1000);
+    </script>
