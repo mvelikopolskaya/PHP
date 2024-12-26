@@ -116,14 +116,12 @@ class User {
         $lastname = $_POST['lastname'];
         $login = $_POST['login'];
         $birthday = $_POST['birthday'];
-        $password = $_POST['password'];
         $result = true;
         if(!(
             isset($name) && !empty($name) &&
             isset($lastname) && !empty($lastname) &&
             isset($birthday) && !empty($birthday) &&
-            isset($login) && !empty($login) &&
-            isset($password) && !empty($password)
+            isset($login) && !empty($login)
         )) {
             $result = false;
         }
@@ -134,7 +132,6 @@ class User {
             if(Validator::textMatch($name)
                 || Validator::textMatch($lastname) 
                 || Validator::textMatch($login)
-                | Validator::textMatch($password)
             ) {
                 $result =  false;
             }
