@@ -59,7 +59,8 @@ class User {
 
     public function setBirthdayFromString(string $birthdayString) : void {
         if(Validator::validateDate($birthdayString)){
-            $this->userBirthday = strtotime($birthdayString);
+            $birthdayString = date('d.m.Y');
+            $this->userBirthday = $birthdayString;
         }
     }
 

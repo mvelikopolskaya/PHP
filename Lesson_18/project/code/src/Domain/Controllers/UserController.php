@@ -108,7 +108,7 @@ class UserController extends AbstractController {
             User::deleteFromStorage($user_id);
             $render = new Render();
             return $render->renderPage(
-                'user-removed.twig', []
+                'user-index.twig', []
             );
         }
         else {
