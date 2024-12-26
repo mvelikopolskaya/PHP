@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html class="h-100">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ title }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" 
+          crossorigin="anonymous">
+    <link href="/css/main.css" rel="stylesheet" />
+    <script src="/js/main.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+            integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
+            crossorigin="anonymous">
+    </script>
+    <body class="h-100 d-flex flex-column">
+        <div id="header">
+            <div id="title"><a name="title">{% include 'header.twig' %}</a></div>
+            <div id="top_menu">
+              <div class="menu_item">
+                <a href="/">Main</a>
+              </div> 
+              | <div class="menu_item">
+                <a href="/user">Users</a>
+              </div> 
+              | <div class="menu_item">
+                <a href="/about">About</a>
+              </div> 
+              |<div class="auth menu_item">{% include 'auth-template.twig' %}</div>
+            </div>
+        </div>
+        <div id="container">
+            <div id="sidebar">
+              <div class="sidebar_item"><a href="/" class="sidebar_item">Main</a></div>
+              <div class="sidebar_item"><a href="/user" class="sidebar_item">Users</a></div>
+              <div class="sidebar_item"><a href="/about" class="sidebar_item">About</a></div>
+            </div>
+            <div id="content" class="content-template">
+              {% include content_template_name %}
+            </div>
+        </div>
+        <div id="footer"><div id="copyright"class="footer mt-auto py-3">{% include 'footer.twig' %}</div>
+        </div>
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" 
+          crossorigin="anonymous">
+        </script>
+    </body>
+  </head>
+</html>

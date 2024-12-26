@@ -1,0 +1,3 @@
+[2024-12-24T16:24:00.837062+00:00] application_logger.ERROR: Method actionNext doesn't exist in controller Geekbrains\Application1\Domain\Controllers\UserController | Attempt to call address /user/next [] []
+[2024-12-24T17:19:54.114725+00:00] application_logger.ERROR: Method actionNext doesn't exist in controller Geekbrains\Application1\Domain\Controllers\UserController | Attempt to call address /user/next [] []
+[2024-12-24T17:19:59.135521+00:00] application_logger.ERROR: Method actionNext doesn't exist in controller Geekbrains\Application1\Domain\Controllers\UserController | Attempt to call address /user/next [] []

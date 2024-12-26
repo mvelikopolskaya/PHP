@@ -1,0 +1,17 @@
+{% if not auth_success %}
+  {{ auth_error }}
+{% endif %}
+
+<form action="/user/login/" method="post">
+  <input id="csrf_token" type="hidden" name="csrf_token" value="{{ csrf_token }}">
+  <p>
+    <label for="user-login">Login:</label>
+    <input id="user-login" type="text" name="login">
+  </p>
+  <p>
+    <label for="user-password">Password:</label>
+    <input id="user-password" type="password" name="password">
+    <input id="user-password" type="checkbox" name="user-remember" value="remember"> Remember
+  </p>
+  <p><input type="submit" value="Enter"></p>
+</form>

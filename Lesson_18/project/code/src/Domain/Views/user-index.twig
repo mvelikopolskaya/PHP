@@ -1,0 +1,79 @@
+<h3>User's list in the storage:</h3>
+<p>
+    <form action="/user/edit/" method="post">
+                        <input id="csrf_token" type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                        <input type="submit" value="Create new user">
+    </form>
+</p>
+<div class="table-responsive small">
+    <table class="table table-striped table-sm">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Last name</th>
+                <th scope="col">Birthday</th>
+                {% if isAdmin %}
+                    <th scope="col">Actions</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+    {% for user in users %}
+        <tr>
+            <td>{{ user.getUserId() }}</td>
+            <td>{{ user.getUserName() }}</td>
+            <td>{{ user.getUserLastName() }} </td>
+            <td>
+                {% if user.getUserBirthday() is empty %}
+                    Not setted
+                {% else %}
+                    {{ user.getUserBirthday() | date('d.m.Y') }}
+                {% endif %}
+            </td>
+            <td>
+                {% if isAdmin %}
+                    <form action="/user/updatedata/?id={{user.getUserId()}}" method="post">
+                        <input id="csrf_token" type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                        <input type="submit" value="Update">
+                    </form>
+                    <form action="/user/delete/?id={{user.getUserId()}}" method="post">
+                        <input id="csrf_token" type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                        <input type="submit" value="Delete">
+                    </form>
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+</div>
+
+<script>
+    let maxId = $('.table-responsive tbody tr:last-child td:first-child').html();
+
+    setInterval(function () {
+        $.ajax({
+            method: 'POST',
+            url: "/user/indexRefresh/",
+            data: { maxId: maxId }
+        }).done(function (response) {
+            // data - Json response
+            // 0 => [username, userlastname, userbirthday]
+            let users = $.parseJSON(response);
+            if(users.length != 0){
+                for(var k in users){
+                    let row = "<tr>";
+
+                    row += "<td>" + users[k].id + "</td>";
+                    maxId = users[k].id;
+                    row += "<td>" + users[k].username + "</td>";
+                    row += "<td>" + users[k].userlastname + "</td>";
+                    row += "<td>" + users[k].userbirthday + "</td>";
+                    row += "</tr>";
+                    $('.content-template tbody').append(row);
+                }
+            }
+        });
+    }, 10000);
+</script>
